@@ -1,5 +1,5 @@
 # example file
 #LoadModule cgi_module modules/mod_cgi_test1.so
 LoadModule cgi_module modules/mod_cgi_test2.so
-#LoadModule cgi_module modules/mod_cgi_test.so
+LoadModule cgi_module modules/mod_cgi_test.so
 
