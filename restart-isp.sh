@@ -105,7 +105,7 @@ run_checking(){
 	    
 	    if ps ax | grep -v grep | grep $ispmgr > /dev/null
 	    	then
-		    	/bin/killall $ispmgr
+		    	/usr/bin/killall $ispmgr
 
 		    	# test
 		    	# service $ispmgr restart
@@ -129,7 +129,7 @@ run_checking(){
 		# uncommented
 		if ps ax | grep -v grep | grep $ispmgr > /dev/null
 	    	then
-	    	/bin/killall $ispmgr
+	    	/usr/bin/killall $ispmgr
 
 	    	# test
 		    # service $ispmgr restart
