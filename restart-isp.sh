@@ -4,25 +4,44 @@
 
 # Variables
 # ---------------------------------------------------\
-file="/home/rb.kz/evgenii.goncharov/soft/scripts/restart-isp/httpd.conf.example"
+file="/etc/httpd/conf/httpd.conf"
+# file="/home/rb.kz/evgenii.goncharov/soft/scripts/restart-isp/httpd.conf.example"
+tmpfile="/tmp/tmpcurl"
+
 dt=$(date '+%d%m%Y-%H%M%S');
 bakfile=$file"-"$dt".bak"
 
+# Services
 ispmgr="nginx"
 httpd="httpd"
 
+# Module name
 cant="\\"
 comment="#"
 moduleload="LoadModule cgi_module modules"
-modeulename="/mod_cgi_test.so"
 
+# original module name #LoadModule cgi_module modules/mod_cgi.so
+modeulename="/mod_cgi.so"
+
+# Result flags
 result_comment="1"
 result_uncomment="0"
 
+# SED patterns
 pattern1="$comment$moduleload$cant$modeulename"
 pattern2="$moduleload$cant$modeulename"
 
+# Checking parameter in file
 result=$(grep "$moduleload$modeulename" $file)
+
+
+# Check tmpfile exist
+createtmp(){
+	if [ ! -f "$tmpfile" ]
+	then
+	    touch $tmpfile
+	fi
+}
 
 # Backup config
 # ---------------------------------------------------\
@@ -33,19 +52,26 @@ createbak(){
 # Comment param (pattern)
 # ---------------------------------------------------\
 comment_param(){
-	echo "No contains!"
+	echo "Paramater uncommented, start comment parameter..."
     createbak
     /usr/bin/sed -i "s/$moduleload$cant$modeulename/$comment$moduleload$cant$modeulename/" $file
-    echo -e "Run comment command\n"
+    echo -e "Paramenter commented!!\n"
+
+    echo -e "/usr/bin/sed -i "s/$moduleload$cant$modeulename/$comment$moduleload$cant$modeulename/" $file"
+
+    createbak
+
 }
 
 # Uncomment param (pattern)
 # ---------------------------------------------------\
 uncomment_param(){
-	echo "Contains!"
+	echo -e "Parameter commented, start uncomment..."
     createbak
     /usr/bin/sed -i "s/$comment$moduleload$cant$modeulename/$moduleload$cant$modeulename/" $file
-    echo -e "Run uncomment command\n"
+    echo -e "Paramenter uncommented!!\n"
+
+    echo -e "/usr/bin/sed -i "s/$comment$moduleload$cant$modeulename/$moduleload$cant$modeulename/" $file"
 }
 
 # Reverse change param :)
@@ -60,20 +86,6 @@ check_param(){
 	fi
 }
 
-# Reverse check param :)
-# ---------------------------------------------------\
-check_and_comment(){
-	if [[ $result != *"$comment"* ]]; then
-	    comment_param
-	fi
-}
-
-check_and_uncomment(){
-	if [[ $result == *"$comment"* ]]; then
-	    uncomment_param
-	fi
-}
-
 # Notify
 # ---------------------------------------------------\
 note(){
@@ -84,107 +96,61 @@ note(){
 
 # Check service
 # ---------------------------------------------------\
-check_httpd_status_service(){
-	if ps ax | grep -v grep | grep $httpd > /dev/null
-
-	then
-		echo "$httpd running!"
-
-	else
-		echo "$httpd NOT running!"
-
-	fi
-}
-
-check_isp_status_service(){
-	if ps ax | grep -v grep | grep $ispmgr > /dev/null
-
-	then
-	echo "$ispmgr running!"
-
-else
-	echo "$ispmgr NOT running!"
-
-fi	
-	
-
-}
-
-wait-and-kill-service(){
-	while :
-	do
-		RESULT=`pgrep ${ispmgr}`
-
-    if [ "${RESULT:-null}" = null ]; then
-            echo "${ispmgr} not running!"
-    else
-            echo "AAAAAAAAAAAAAAAA running!"
-
-            result_param=$(check_param)
-            echo "$result_param"
-
-            if [[ $result_param == $result_comment ]]; then
-			    #uncomment_param
-			    echo "NO need comment"
-			    exit 0
-			else
-				#comment_param
-				echo "Need comment"
-				service $httpd stop
-	            check_and_comment
-	            service $httpd start
-	            check_httpd_status_service
-	            check_isp_status_service
-	            exit 0
-			fi
-
-    fi
-    sleep 10
-
-
-	done
-}
 
 run_checking(){
-if ps ax | grep -v grep | grep $ispmgr > /dev/null
 
-	then
-	echo "$ispmgr running!"
-	#/usr/bin/killall $ispmgr
-	#echo "$ispmgr Killed!"
+	createtmp
 
 	result_param=$(check_param)
 
-    if [[ $result_param == $result_comment ]]; then
-	    #uncomment_param
-	    check_and_uncomment
+	echo $result_param
+
+	if [[ $result_param == $result_comment ]]; then
+	    # commented
+	    uncomment_param
 	    service $httpd restart
-	    wait-and-kill-service
+	    
+	    if ps ax | grep -v grep | grep $ispmgr > /dev/null
+	    	then
+		    	/usr/bin/killall $ispmgr
+
+		    	# test
+		    	service $ispmgr restart
+
+		    	curl -L -k https://178.88.115.227/myhosting-manager > $tmpfile
+	    	else
+	    		
+	    		# test
+		    	service $ispmgr restart
+
+	    		curl -L -k https://178.88.115.227/myhosting-manager > $tmpfile
+	    fi
+
+	    comment_param
+	    service $httpd restart
+
+	    exit 0
+
 	else
-		check_and_comment
-		service $httpd restart
-		wait-and-kill-service
+		# uncommented
+		if ps ax | grep -v grep | grep $ispmgr > /dev/null
+	    	then
+	    	/usr/bin/killall $ispmgr
+
+	    	# test
+		    	service $ispmgr restart
+
+	    	curl -L -k https://178.88.115.227/myhosting-manager > $tmpfile
+	    fi
+
+	    comment_param
+	    service $httpd restart
+
 	fi
 
-else
-	echo "$ispmgr NOT running!"
 
-	while :
-	do
-		RESULT=`pgrep ${ispmgr}`
-
-    if [ "${RESULT:-null}" = null ]; then
-            echo "${ispmgr} not running!"
-    else
-            echo "running!"
-    fi
-    sleep 10
-
-
-	done
-
-fi
 }
+
 
 # Check run arguments
 # ---------------------------------------------------\
@@ -197,17 +163,12 @@ fi
 for i in "$@" ; do
 
     if [[ $i == "--restart-isp" ]] ; then
-    	
+    	run_checking
+
         break
     fi
 
     if [[ $i == "--restat-server" ]] ; then
-    	
-        break
-    fi
-
-    if [[ $i == "--run-check" ]] ; then
-    	run_checking
     	
         break
     fi
