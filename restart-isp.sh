@@ -12,7 +12,8 @@ dt=$(date '+%d%m%Y-%H%M%S');
 bakfile=$file"-"$dt".bak"
 
 # Services
-ispmgr="nginx"
+# ispmgr="nginx"
+ispmgr="ispmgr"
 httpd="httpd"
 
 # Module name
@@ -102,8 +103,7 @@ run_checking(){
 	createtmp
 
 	result_param=$(check_param)
-
-	echo $result_param
+	#echo $result_param
 
 	if [[ $result_param == $result_comment ]]; then
 	    # commented
@@ -115,13 +115,13 @@ run_checking(){
 		    	/usr/bin/killall $ispmgr
 
 		    	# test
-		    	service $ispmgr restart
+		    	# service $ispmgr restart
 
 		    	curl -L -k https://178.88.115.227/myhosting-manager > $tmpfile
 	    	else
 	    		
 	    		# test
-		    	service $ispmgr restart
+		    	# service $ispmgr restart
 
 	    		curl -L -k https://178.88.115.227/myhosting-manager > $tmpfile
 	    fi
@@ -138,7 +138,7 @@ run_checking(){
 	    	/usr/bin/killall $ispmgr
 
 	    	# test
-		    	service $ispmgr restart
+		    # service $ispmgr restart
 
 	    	curl -L -k https://178.88.115.227/myhosting-manager > $tmpfile
 	    fi
