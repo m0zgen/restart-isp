@@ -57,11 +57,6 @@ comment_param(){
     createbak
     /bin/sed -i "s/$moduleload$cant$modeulename/$comment$moduleload$cant$modeulename/" $file
     echo -e "Paramenter commented!!\n"
-
-    echo -e "/bin/sed -i "s/$moduleload$cant$modeulename/$comment$moduleload$cant$modeulename/" $file"
-
-    createbak
-
 }
 
 # Uncomment param (pattern)
@@ -71,8 +66,6 @@ uncomment_param(){
     createbak
     /bin/sed -i "s/$comment$moduleload$cant$modeulename/$moduleload$cant$modeulename/" $file
     echo -e "Paramenter uncommented!!\n"
-
-    echo -e "/bin/sed -i "s/$comment$moduleload$cant$modeulename/$moduleload$cant$modeulename/" $file"
 }
 
 # Reverse change param :)
@@ -126,6 +119,7 @@ run_checking(){
 	    		curl -L -k https://178.88.115.227/myhosting-manager > $tmpfile
 	    fi
 
+	    sleep 3
 	    comment_param
 	    service $httpd restart
 
@@ -143,6 +137,7 @@ run_checking(){
 	    	curl -L -k https://178.88.115.227/myhosting-manager > $tmpfile
 	    fi
 
+	    sleep 3
 	    comment_param
 	    service $httpd restart
 
