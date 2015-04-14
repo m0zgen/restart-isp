@@ -47,7 +47,7 @@ createtmp(){
 # Backup config
 # ---------------------------------------------------\
 createbak(){
-    /usr/bin/cp $file $bakfile
+    /bin/cp $file $bakfile
 }
 
 # Comment param (pattern)
@@ -55,10 +55,10 @@ createbak(){
 comment_param(){
 	echo "Paramater uncommented, start comment parameter..."
     createbak
-    /usr/bin/sed -i "s/$moduleload$cant$modeulename/$comment$moduleload$cant$modeulename/" $file
+    /bin/sed -i "s/$moduleload$cant$modeulename/$comment$moduleload$cant$modeulename/" $file
     echo -e "Paramenter commented!!\n"
 
-    echo -e "/usr/bin/sed -i "s/$moduleload$cant$modeulename/$comment$moduleload$cant$modeulename/" $file"
+    echo -e "/bin/sed -i "s/$moduleload$cant$modeulename/$comment$moduleload$cant$modeulename/" $file"
 
     createbak
 
@@ -69,10 +69,10 @@ comment_param(){
 uncomment_param(){
 	echo -e "Parameter commented, start uncomment..."
     createbak
-    /usr/bin/sed -i "s/$comment$moduleload$cant$modeulename/$moduleload$cant$modeulename/" $file
+    /bin/sed -i "s/$comment$moduleload$cant$modeulename/$moduleload$cant$modeulename/" $file
     echo -e "Paramenter uncommented!!\n"
 
-    echo -e "/usr/bin/sed -i "s/$comment$moduleload$cant$modeulename/$moduleload$cant$modeulename/" $file"
+    echo -e "/bin/sed -i "s/$comment$moduleload$cant$modeulename/$moduleload$cant$modeulename/" $file"
 }
 
 # Reverse change param :)
@@ -112,7 +112,7 @@ run_checking(){
 	    
 	    if ps ax | grep -v grep | grep $ispmgr > /dev/null
 	    	then
-		    	/usr/bin/killall $ispmgr
+		    	/bin/killall $ispmgr
 
 		    	# test
 		    	# service $ispmgr restart
@@ -135,7 +135,7 @@ run_checking(){
 		# uncommented
 		if ps ax | grep -v grep | grep $ispmgr > /dev/null
 	    	then
-	    	/usr/bin/killall $ispmgr
+	    	/bin/killall $ispmgr
 
 	    	# test
 		    # service $ispmgr restart
