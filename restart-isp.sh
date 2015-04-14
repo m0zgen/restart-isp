@@ -1,11 +1,9 @@
 #!/bin/bash
-
-
+# Author: Yevgeniy Goncharov aka xck, http://sys-admin.kz
 
 # Variables
 # ---------------------------------------------------\
 file="/etc/httpd/conf/httpd.conf"
-# file="/home/rb.kz/evgenii.goncharov/soft/scripts/restart-isp/httpd.conf.example"
 tmpfile="/tmp/tmpcurl"
 
 dt=$(date '+%d%m%Y-%H%M%S');
@@ -20,8 +18,6 @@ httpd="httpd"
 cant="\\"
 comment="#"
 moduleload="LoadModule cgi_module modules"
-
-# original module name #LoadModule cgi_module modules/mod_cgi.so
 modeulename="/mod_cgi.so"
 
 # Result flags
