@@ -31,6 +31,11 @@ pattern2="$moduleload$cant$modeulename"
 # Checking parameter in file
 result=$(grep "$moduleload$modeulename" $file)
 
+# Get IP
+# ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/'
+# hostname -i
+LOCAL_IP=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/')
+
 
 # Check tmpfile exist
 createtmp(){
@@ -90,8 +95,8 @@ note(){
 run_checking(){
 
 	createtmp
-
 	result_param=$(check_param)
+
 	#echo $result_param
 
 	if [[ $result_param == $result_comment ]]; then
@@ -102,17 +107,18 @@ run_checking(){
 	    if ps ax | grep -v grep | grep $ispmgr > /dev/null
 	    	then
 		    	/usr/bin/killall $ispmgr
+		    	echo -e "$ispmgr - running, killed..."
 
 		    	# test
 		    	# service $ispmgr restart
 
-		    	curl -L -k https://178.88.115.227/myhosting-manager > $tmpfile
+		    	curl -L -k https://${LOCAL_IP}/myhosting-manager > $tmpfile
 	    	else
 	    		
 	    		# test
 		    	# service $ispmgr restart
 
-	    		curl -L -k https://178.88.115.227/myhosting-manager > $tmpfile
+	    		curl -L -k https://${LOCAL_IP}/myhosting-manager > $tmpfile
 	    fi
 
 	    sleep 3
@@ -130,7 +136,7 @@ run_checking(){
 	    	# test
 		    # service $ispmgr restart
 
-	    	curl -L -k https://178.88.115.227/myhosting-manager > $tmpfile
+	    	curl -L -k https://${LOCAL_IP}/myhosting-manager > $tmpfile
 	    fi
 
 	    sleep 3
