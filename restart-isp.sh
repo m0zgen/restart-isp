@@ -113,13 +113,13 @@ run_checking(){
 		    	# test
 		    	# service $ispmgr restart
 
-		    	curl -L -k https://${LOCAL_IP}/myhosting-manager > $tmpfile
+		    	curl -L -k https://$LOCAL_IP/myhosting-manager > $tmpfile
 	    	else
 	    		
 	    		# test
 		    	# service $ispmgr restart
 
-	    		curl -L -k https://${LOCAL_IP}/myhosting-manager > $tmpfile
+	    		curl -L -k https://$LOCAL_IP/myhosting-manager > $tmpfile
 	    fi
 
 	    sleep 3
@@ -137,7 +137,7 @@ run_checking(){
 	    	# test
 		    # service $ispmgr restart
 
-	    	curl -L -k https://${LOCAL_IP}/myhosting-manager > $tmpfile
+	    	curl -L -k https://$LOCAL_IP/myhosting-manager > $tmpfile
 	    fi
 
 	    sleep 3
