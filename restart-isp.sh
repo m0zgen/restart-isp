@@ -13,6 +13,9 @@ bakfile=$file"-"$dt".bak"
 # ispmgr="nginx"
 ispmgr="ispmgr"
 httpd="httpd"
+#linkisp="myhosting-manager"
+linkisp="manager"
+
 
 # Module name
 cant="\\"
@@ -113,13 +116,13 @@ run_checking(){
 		    	# test
 		    	# service $ispmgr restart
 
-		    	curl -L -k https://$LOCAL_IP/myhosting-manager > $tmpfile
+		    	curl -L -k https://$LOCAL_IP/$linkisp > $tmpfile
 	    	else
 	    		
 	    		# test
 		    	# service $ispmgr restart
 
-	    		curl -L -k https://$LOCAL_IP/myhosting-manager > $tmpfile
+	    		curl -L -k https://$LOCAL_IP/$linkisp > $tmpfile
 	    fi
 
 	    sleep 3
@@ -137,7 +140,7 @@ run_checking(){
 	    	# test
 		    # service $ispmgr restart
 
-	    	curl -L -k https://$LOCAL_IP/myhosting-manager > $tmpfile
+	    	curl -L -k https://$LOCAL_IP/linkisp > $tmpfile
 	    fi
 
 	    sleep 3
