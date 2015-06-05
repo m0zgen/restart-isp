@@ -35,6 +35,7 @@ result=$(grep "$moduleload$modeulename" $file)
 # ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/'
 # hostname -i
 LOCAL_IP=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/')
+echo "Yur IP: ${LOCAL_IP}"
 
 
 # Check tmpfile exist
